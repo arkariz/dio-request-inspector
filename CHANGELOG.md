@@ -1,4 +1,9 @@
 
+## 3.2.1
+
+* chore: remove unused share_plus dependency
+* chore: add android & ios example apps
+
 ## 3.2.0
 
 * chore: update dio to ^5.8.0+1

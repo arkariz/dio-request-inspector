@@ -23,6 +23,10 @@ A HTTP inspector for Dio, which can intercept and log HTTP requests and response
 - [X] Search logs by path
 - [X] Easily share request and response data
 - [X] Beautify JSON data
+- [X] Image support for responses
+- [X] Response body searching
+- [X] Summary flag support
+- [X] Copy to cURL
 - [X] Beautiful user interface
 
 ## How to use
@@ -33,6 +37,36 @@ A HTTP inspector for Dio, which can intercept and log HTTP requests and response
 flutter pub add dio_request_inspector
 ```
 
+- Create and configure `DioRequestInspector` instance
+
+```dart
+final DioRequestInspector inspector = DioRequestInspector(
+  isInspectorEnabled: true,
+  password: '123456', // optional, remove if you don't need password
+  showSummary: true, // optional, default is true
+);
+```
+
+- add interceptor to your Dio instance
+
+```dart
+dio.interceptors.add(inspector.getDioRequestInterceptor());
+```
+
+- Wrap your `myApp` with `DioRequestInspectorMain`
+
+```dart
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(
+    DioRequestInspectorMain(
+      inspector: inspector,
+      child: const MyApp(),
+    ),
+  );
+}
+```
+
 - add `navigatorObservers` to your `MaterialApp`
 
 ```dart
@@ -41,31 +75,26 @@ navigatorObservers: [
 ],
 ```
 
-- Wrap your `myApp` with `DioRequestInspectorMain`
+## Usage
+
+### Show Inspector UI
+
+You can open the DioRequestInspector in two ways:
+
+1. **Long press** on your screen to show DioRequestInspector UI (if using `DioRequestInspectorMain`)
+
+2. **Programmatically** call:
 
 ```dart
-void main() {
-  runApp(DioRequestInspectorMain(
-    isDebugMode: true,
-    child: MyApp(),
-  ));
-}
+inspector.goToInspector();
 ```
 
-- add interceptor to your Dio instance
+## Parameters
 
-```dart
-final DioRequestInspector inspector = DioRequestInspector(
-  isInspectorEnabled: true,
-  password: '123456', // remove this line if you don't need password
-  showSummary: false,
-);
+- `isInspectorEnabled` - Enable or disable the inspector (required)
+- `password` - Optional password protection for the inspector
+- `showSummary` - Show summary view (default: true)
 
-dio.interceptors.add(inspector.getDioRequestInterceptor());
-```
+## Example
 
-see detail example
-
-## Note
-
-- tap ```Long press``` on your screen to show DioRequestInspector UI
+See the [example](example/) directory for a complete working example.
